@@ -1,8 +1,10 @@
-package pe.pucp.tel306.firebox;
+package pe.pucp.tel306.firebox.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+
+import pe.pucp.tel306.firebox.Fragments.LoginFragment;
+import pe.pucp.tel306.firebox.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,10 +30,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LoginFragment loginFragment = LoginFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.loggingContainer, loginFragment);
+        fragmentTransaction.commit();
     }
 
-    public void login(View view) {
-
+    public void login(View view)
+    {
         List<AuthUI.IdpConfig> proveedores = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
@@ -37,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         AuthUI instance = AuthUI.getInstance();
         Intent intent = instance.createSignInIntentBuilder().setLogo(R.mipmap.ic_launcher).setAvailableProviders(proveedores).build();
         startActivityForResult(intent, 1);
-
     }
 
     @Override
@@ -78,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, PrincipalActivity.class));
         finish();
     }
+
 
 
 }
