@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "948526728018",
+    "firebase_url": "https://lab5g4-default-rtdb.firebaseio.com",
     "project_id": "lab5g4",
     "storage_bucket": "lab5g4.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "948526728018-0da908iiomf3b9edk2bui10jt5398idp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.pucp.tel306.firebox",
+            "certificate_hash": "2ba531a3c8e290672b0c0789f2754cabdc807a7d"
+          }
+        },
+        {
+          "client_id": "948526728018-5fkiip35abjasehig12bitsqdvanpmf6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.pucp.tel306.firebox",
+            "certificate_hash": "26e6cf78614cbffd070ae036bc180f7148036e7f"
+          }
+        },
         {
           "client_id": "948526728018-j98runs1udkgrpjm6n1s2ibdtqbvqvnd.apps.googleusercontent.com",
           "client_type": 3
