@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,8 @@ import pe.pucp.tel306.firebox.Fragments.LoginFragment;
 import pe.pucp.tel306.firebox.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    StorageReference storage = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +64,14 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             if (currentUser.isEmailVerified()) {
-                goToMainScreen(currentUser);
+                StorageReference reference= storage.child(currentUser.getUid()); //Aquí se crea la carpeta del usuario creado
+                goToMainScreen();
             } else {
                 currentUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (currentUser.isEmailVerified()) {
-                            goToMainScreen(currentUser);
+                            goToMainScreen();
                         } else {
                             Toast.makeText(MainActivity.this, "Se ha enviado un correo para que verifique la cuenta", Toast.LENGTH_SHORT).show();
                             currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -82,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void goToMainScreen(FirebaseUser currentUser) {
+    public void goToMainScreen() {
         startActivity(new Intent(MainActivity.this, PrincipalActivity.class));
         finish();
     }
