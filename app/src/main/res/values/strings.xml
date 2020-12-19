@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">lab5g4</string>
+    <string name="bienvenido_a_firebox">Bienvenido a Firebox</string>
+    <string name="log_in">Log in</string>
+</resources>

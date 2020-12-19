@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "948526728018",
+    "project_id": "lab5g4",
+    "storage_bucket": "lab5g4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948526728018:android:84a52da720dbe784aff08b",
+        "android_client_info": {
+          "package_name": "pe.pucp.tel306.firebox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948526728018-j98runs1udkgrpjm6n1s2ibdtqbvqvnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQRCqOiaKUG--0JbsZej21Z5AW1Jw7aL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948526728018-j98runs1udkgrpjm6n1s2ibdtqbvqvnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
