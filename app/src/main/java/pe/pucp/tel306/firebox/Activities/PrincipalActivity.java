@@ -251,12 +251,33 @@ public class PrincipalActivity extends AppCompatActivity {
         }
         if (requestCode==4)
         {
+            Uri oriol = data.getData();
+            //Se usa la metadata para almacenar el nombre que se mostrará del archivo
+            StorageMetadata metadata = new StorageMetadata.Builder()
+                    .setCustomMetadata("displayName", getFileName(oriol))
+                    .build();
+            UploadTask uploadTask = referenciaCarpeta.child(oriol.getLastPathSegment()).putFile(oriol,metadata);
 
-            // Create a new user with a first and last name
+            //Se notifica si se subio el archivo correctamente y se lista
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(PrincipalActivity.this,"Se subio el documento exitosamente",Toast.LENGTH_SHORT).show();
+                    listarDocumentos();
+                }
+            });
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PrincipalActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            String ruta = referenciaCarpeta.getPath() + oriol.getLastPathSegment() ;
             HashMap<String, Object> priv = new HashMap<>();
-            priv.put("ruta", "Marcelo");
+            priv.put("ruta", ruta);
 
-            // Add a new document in privatefiles
             db.collection("users").document(currentUser.getUid()).collection("privatefiles")
                     .add(priv)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

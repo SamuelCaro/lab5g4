@@ -101,50 +101,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                CollectionReference usersCollectionRef = db.collection("users").document(currentUser.getUid()).collection("privatefiles");
-                //Calculamos la cantidad de documentos en privatefiles
-                int cant = 0;
-                db.collection("users").document(currentUser.getUid()).collection("privatefiles")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    int cant = 0;
-                                    for (DocumentSnapshot document : task.getResult()) {
-                                        cant++;
-                                    }
-                                    Log.d(TAG, "Cantidad de doc dentro de privatefiles: " + cant);
-                                    if(user.get("tipo").equals("free")&&(cant<5)){
 
-                                        // Create a new user with a first and last name
-                                        HashMap<String, Object> priv = new HashMap<>();
-                                        priv.put("ruta", "Marcelo");
-
-                                        // Add a new document in privatefiles
-                                        db.collection("users").document(currentUser.getUid()).collection("privatefiles")
-                                                .add(priv)
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error adding document", e);
-                                                    }
-                                                });
-
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 //
 
                 //La carpeta se creara a penas se añada un archivo
