@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/añadirCarpeta"
+        android:title="@string/a_adir_carpeta" />
+    <item
+        android:id="@+id/añadirArchivo"
+        android:title="@string/a_adir_archivo" />
+    <item
+        android:id="@+id/añadirArchivoPrivado"
+        android:title="@string/a_adir_archivo_privado" />
+</menu>

@@ -1,16 +1,16 @@
 package pe.pucp.tel306.firebox.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     StorageReference storage = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String TAG = "infoAPP";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             if (currentUser.isEmailVerified()) {
-                StorageReference reference= storage.child(currentUser.getUid()); //Aquí se crea la carpeta del usuario creado
+                // StorageReference reference= storage.child(currentUser.getUid());  //Aquí se crea la carpeta del usuario creado
 
 
                 final HashMap<String, Object> user = new HashMap<>();
@@ -117,11 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
                                         // Create a new user with a first and last name
                                         HashMap<String, Object> priv = new HashMap<>();
-                                        priv.put("first", "Marcelo");
-                                        priv.put("last", "Garcia");
-                                        priv.put("born", 1991);
+                                        priv.put("ruta", "Marcelo");
 
-                                        // Add a new document with a generated ID
+                                        // Add a new document in privatefiles
                                         db.collection("users").document(currentUser.getUid()).collection("privatefiles")
                                                 .add(priv)
                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -147,10 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                 //
 
-
-
-
-
+                //La carpeta se creara a penas se añada un archivo
                 goToMainScreen();
             } else {
                 currentUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
