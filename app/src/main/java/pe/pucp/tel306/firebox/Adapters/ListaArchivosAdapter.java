@@ -3,7 +3,9 @@ package pe.pucp.tel306.firebox.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,12 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import pe.pucp.tel306.firebox.Activities.PrincipalActivity;
 import pe.pucp.tel306.firebox.R;
@@ -172,6 +177,90 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
                         if (tipo.equalsIgnoreCase("carpeta")) Toast.makeText(context,"Comming soon", Toast.LENGTH_SHORT).show();
                         else
                         {
+                            //
+                            reference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                                @Override
+                                public void onSuccess(StorageMetadata storageMetadata) {
+                                    // Metadata now contains the metadata for 'images/forest.jpg'
+                                    final String pswd = storageMetadata.getCustomMetadata("password");
+                                    Log.d("infoAPP", "el psswd es "+ pswd)    ;
+                                    if(pswd!=null)
+                                    {
+
+                                        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setTitle("Ingrese la contraseña");
+                                        builder.setMessage("Deberá ingresar su contraseña");
+
+                                        final EditText passwd = new EditText(context.getApplicationContext());
+                                        builder.setView(passwd);
+                                        builder.setPositiveButton("confirmar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (passwd.getText().toString().equals(""))
+                                                {
+                                                    passwd.setError("Tienes que inidcar una contraseña");
+                                                    Toast.makeText(context,"Tienes que inidcar una contraseña",Toast.LENGTH_SHORT).show();
+                                                }
+                                                else
+                                                {
+                                                    if(passwd.getText().toString().equals(pswd)){
+                                                        //Se piden los permisos
+                                                        PrincipalActivity principalActivity = (PrincipalActivity) context;
+                                                        principalActivity.validadPermisosDeEscritura();
+                                                        if(principalActivity.validadPermisosDeEscritura())
+                                                        {
+                                                            //Se descarga en downloads
+                                                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                                            File localFile = new File(directorio, nombreDocumento.getText().toString());
+                                                            reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                                    Toast.makeText(context, "Archivo descargado",Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Toast.makeText(context, e.getMessage(),Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        });
+                                        builder.show();
+                                    }else{
+                                        //Se piden los permisos
+                                        PrincipalActivity principalActivity = (PrincipalActivity) context;
+                                        principalActivity.validadPermisosDeEscritura();
+                                        if(principalActivity.validadPermisosDeEscritura())
+                                        {
+                                            //Se descarga en downloads
+                                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                            File localFile = new File(directorio, nombreDocumento.getText().toString());
+                                            reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                    Toast.makeText(context, "Archivo descargado",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(context, e.getMessage(),Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    }
+
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                }
+                            });
+                            /*
                             //Se piden los permisos
                             PrincipalActivity principalActivity = (PrincipalActivity) context;
                             principalActivity.validadPermisosDeEscritura();
@@ -192,6 +281,7 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
                                     }
                                 });
                             }
+                            */
                         }
                         return true;
 

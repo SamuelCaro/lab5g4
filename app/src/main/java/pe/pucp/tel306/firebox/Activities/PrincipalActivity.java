@@ -196,7 +196,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     //Para gestionar cuando se añada un elemento
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
 
         //En caso sea un archivo
         if (requestCode==2)
@@ -251,48 +251,73 @@ public class PrincipalActivity extends AppCompatActivity {
         }
         if (requestCode==4)
         {
-            Uri oriol = data.getData();
-            //Se usa la metadata para almacenar el nombre que se mostrará del archivo
-            StorageMetadata metadata = new StorageMetadata.Builder()
-                    .setCustomMetadata("displayName", getFileName(oriol))
-                    .build();
-            UploadTask uploadTask = referenciaCarpeta.child(oriol.getLastPathSegment()).putFile(oriol,metadata);
-
-            //Se notifica si se subio el archivo correctamente y se lista
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            //Storage
+            //Alert dialog
+            final AlertDialog.Builder builder = new AlertDialog.Builder(PrincipalActivity.this);
+            builder.setTitle("Ingrese la contraseña");
+            builder.setMessage("Deberá ingresar su contraseña");
+            final EditText passwd = new EditText(getApplicationContext());
+            builder.setView(passwd);
+            builder.setPositiveButton("confirmar", new DialogInterface.OnClickListener() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(PrincipalActivity.this,"Se subio el documento exitosamente",Toast.LENGTH_SHORT).show();
-                    listarDocumentos();
+                public void onClick(DialogInterface dialog, int which) {
+                    if (passwd.getText().toString().equals(""))
+                    {
+                        passwd.setError("Tienes que inidcar una contraseña");
+                        Toast.makeText(PrincipalActivity.this,"Tienes que inidcar una contraseña",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Uri oriol = data.getData();
+
+                        //Se usa la metadata para almacenar el nombre que se mostrará del archivo
+                        StorageMetadata metadata = new StorageMetadata.Builder()
+                                .setCustomMetadata("displayName", getFileName(oriol)).setCustomMetadata("password", passwd.getText().toString())
+                                .build();
+                        UploadTask uploadTask = referenciaCarpeta.child(oriol.getLastPathSegment()).putFile(oriol,metadata);
+
+                        //Se notifica si se subio el archivo correctamente y se lista
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(PrincipalActivity.this,"Se subio el documento exitosamente",Toast.LENGTH_SHORT).show();
+                                listarDocumentos();
+                            }
+                        });
+
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(PrincipalActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        //Firestorage
+                        String ruta = referenciaCarpeta.getPath() + oriol.getLastPathSegment() ;
+                        HashMap<String, Object> priv = new HashMap<>();
+                        priv.put("ruta", ruta);
+
+                        db.collection("users").document(currentUser.getUid()).collection("privatefiles")
+                                .add(priv)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
+                    }
                 }
             });
+            builder.show();
 
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(PrincipalActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
 
-            String ruta = referenciaCarpeta.getPath() + oriol.getLastPathSegment() ;
-            HashMap<String, Object> priv = new HashMap<>();
-            priv.put("ruta", ruta);
 
-            db.collection("users").document(currentUser.getUid()).collection("privatefiles")
-                    .add(priv)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
