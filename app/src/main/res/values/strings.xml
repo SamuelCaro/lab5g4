@@ -2,7 +2,6 @@
     <string name="app_name">lab5g4</string>
     <string name="bienvenido_a_firebox">Bienvenido a Firebox</string>
     <string name="log_in">Log in</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cerrar_sesion">Cerrar sesion</string>
     <string name="a_adirelementos">AñadirElementos</string>
@@ -11,4 +10,7 @@
     <string name="renombrar">Renombrar</string>
     <string name="descargar">Descargar</string>
     <string name="borrar">Borrar</string>
+    <string name="a_adir_carpeta">Añadir Carpeta</string>
+    <string name="a_adir_archivo">Añadir Archivo</string>
+    <string name="a_adir_archivo_privado">Añadir Archivo Privado</string>
 </resources>

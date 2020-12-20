@@ -4,8 +4,11 @@
 
     <item
         android:id="@+id/añadirCarpeta"
-        android:title="Añadir Carpeta" />
+        android:title="@string/a_adir_carpeta" />
     <item
         android:id="@+id/añadirArchivo"
-        android:title="Añadir Archivo" />
+        android:title="@string/a_adir_archivo" />
+    <item
+        android:id="@+id/añadirArchivoPrivado"
+        android:title="@string/a_adir_archivo_privado" />
 </menu>

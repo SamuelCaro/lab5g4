@@ -1,35 +1,30 @@
 package pe.pucp.tel306.firebox.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActivityChooserView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,9 +40,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import pe.pucp.tel306.firebox.Adapters.ListaArchivosAdapter;
 import pe.pucp.tel306.firebox.R;
@@ -103,7 +96,7 @@ public class PrincipalActivity extends AppCompatActivity {
                                         if (nombreTv.getText().toString().equals(""))
                                         {
                                             nombreTv.setError("Se debe indicar el nombre de la carpeta");
-                                            Toast.makeText(PrincipalActivity.this,"Se debe indicar el nombre de la carpeta",Toast.LENGTH_SHORT).show();;
+                                            Toast.makeText(PrincipalActivity.this,"Se debe indicar el nombre de la carpeta",Toast.LENGTH_SHORT).show();
                                         }
                                         else
                                         {
@@ -118,6 +111,12 @@ public class PrincipalActivity extends AppCompatActivity {
                                 builder.show();
                                 return true;
                             }
+                            case R.id.añadirArchivoPrivado:
+                            {
+                                //Todo marce tu mismo eres
+                                return true;
+                            }
+
                             default:return false;
                         }
                     }
@@ -212,8 +211,8 @@ public class PrincipalActivity extends AppCompatActivity {
                 }
 
                 //Se obtienen los archivos
-                for (StorageReference item : listResult.getItems()) references.add(item);
-                Log.d(TAG, "onSuccess:" + String.valueOf(references.size()));
+                references.addAll(listResult.getItems());
+                Log.d(TAG, "onSuccess:" + references.size());
 
                 //Esto es para mostrar cuando no hay nada
                 TextView hayElementos = findViewById(R.id.ceroDocumentos);
@@ -231,7 +230,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
 
     //Esto es para cerrar la sesion
-    public void cerrarSesion(View view)
+    public void cerrarSesion()
     {
         AuthUI.getInstance().signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -244,7 +243,7 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     //Para validar los permisos de escritura cuando se descarga
-    public boolean validadPermisosDeEscritura(View view)
+    public boolean validadPermisosDeEscritura()
     {
         int permiso = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -271,7 +270,7 @@ public class PrincipalActivity extends AppCompatActivity {
             Log.d("infoApp", "Permisos concedidos");
 
             if(requestCode == 1) { //DM
-                validadPermisosDeEscritura(null);
+                validadPermisosDeEscritura();
             }
         } else {
             Log.d("infoApp", "no se brindaron los permisos");
@@ -312,6 +311,20 @@ public class PrincipalActivity extends AppCompatActivity {
             listarDocumentos();
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.logout: cerrarSesion();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     //Se crea el set de la referencia que se usa en el adapter
     public void setReferenciaCarpeta(StorageReference referenciaCarpeta) {

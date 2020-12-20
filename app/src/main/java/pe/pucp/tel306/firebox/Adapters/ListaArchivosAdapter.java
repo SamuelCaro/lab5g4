@@ -174,8 +174,8 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
                         {
                             //Se piden los permisos
                             PrincipalActivity principalActivity = (PrincipalActivity) context;
-                            principalActivity.validadPermisosDeEscritura(itemView);
-                            if(principalActivity.validadPermisosDeEscritura(itemView))
+                            principalActivity.validadPermisosDeEscritura();
+                            if(principalActivity.validadPermisosDeEscritura())
                             {
                                 //Se descarga en downloads
                                 File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);

@@ -1,24 +1,22 @@
 package pe.pucp.tel306.firebox.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +26,6 @@ import pe.pucp.tel306.firebox.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    StorageReference storage = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             if (currentUser.isEmailVerified()) {
-                StorageReference reference= storage.child(currentUser.getUid()); //Aquí se crea la carpeta del usuario creado
-
+                //La carpeta se creara a penas se añada un archivo
                 goToMainScreen();
             } else {
                 currentUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
