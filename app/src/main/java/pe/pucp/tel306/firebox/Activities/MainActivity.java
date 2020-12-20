@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null) {
             if (currentUser.isEmailVerified()) {
                 StorageReference reference= storage.child(currentUser.getUid()); //Aquí se crea la carpeta del usuario creado
+
                 goToMainScreen();
             } else {
                 currentUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -5,4 +5,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="a_adirelementos">AñadirElementos</string>
+    <string name="file">file</string>
+    <string name="no_presenta_documentos">No presenta Documentos</string>
 </resources>
