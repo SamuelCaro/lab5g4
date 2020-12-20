@@ -8,4 +8,7 @@
     <string name="a_adirelementos">AñadirElementos</string>
     <string name="file">file</string>
     <string name="no_presenta_documentos">No presenta Documentos</string>
+    <string name="renombrar">Renombrar</string>
+    <string name="descargar">Descargar</string>
+    <string name="borrar">Borrar</string>
 </resources>

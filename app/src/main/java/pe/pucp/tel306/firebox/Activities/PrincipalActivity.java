@@ -42,6 +42,9 @@ import java.util.HashMap;
 import pe.pucp.tel306.firebox.Adapters.ListaArchivosAdapter;
 import pe.pucp.tel306.firebox.R;
 
+//Todo entrar en carpetas
+//Todo opciones de archivos
+
 public class PrincipalActivity extends AppCompatActivity {
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
